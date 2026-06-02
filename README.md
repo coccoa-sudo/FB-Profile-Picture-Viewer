@@ -1,13 +1,12 @@
-<p align="left">
-  <img src="https://raw.githubusercontent.com/coccoa-sudo/FB-Profile-Picture-Viewer/refs/heads/main/screenshots/icono1.png" width="50" style="vertical-align: middle; margin-right: 1px;">
-  <strong style="font-size: 24px; vertical-align: middle;">FB Profile Picture Viewer</strong>
-  <a href="https://github.com/coccoa-sudo/FB-Profile-Picture-Viewer">
-    <img src="https://img.shields.io/badge/version-1.1-blue" alt="Version" style="vertical-align: middle; margin-left: 5px;">
-  </a>
-</p>
-<hr>
+<table align="center">
+  <tr>
+    <td width="60"><img src="screenshots/icono1.png" width="30"></td>
+    <td><strong style="font-size: 20px;">FB Profile Picture Viewer</strong></td>
+    <td><a href="https://github.com/coccoa-sudo/FB-Profile-Picture-Viewer"><img src="https://img.shields.io/badge/version-1.1-blue" alt="Version"></a></td>
+  </tr>
+</table>
 <p align="center">
-  <img src="https://raw.githubusercontent.com/coccoa-sudo/FB-Profile-Picture-Viewer/refs/heads/main/screenshots/larg-promotional.png" alt="FB Profile Picture Viewer Demo" width="500">
+  <img src="screenshots/larg-promotional.png" alt="FB Profile Picture Viewer Demo" width="500">
 </p>
 
 [![Chromium](https://img.shields.io/badge/Chromium-Compatible-4285F4?logo=googlechrome)](https://www.chromium.org/)
