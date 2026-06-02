@@ -6,7 +6,7 @@
   </tr>
 </table>
 <p align="center">
-  <img src="screenshots/larg-promotional.png" alt="FB Profile Picture Viewer Demo" width="500">
+  <img src="screenshots/larg-promotional.png" alt="FB Profile Picture Viewer Demo" width="800">
 </p>
 
 [![Chromium](https://img.shields.io/badge/Chromium-Compatible-4285F4?logo=googlechrome)](https://www.chromium.org/)
