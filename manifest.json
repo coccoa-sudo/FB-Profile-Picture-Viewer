@@ -1,0 +1,30 @@
+{
+  "manifest_version": 3,
+  "name": "FB Profile Picture Viewer",
+  "version": "1.1",
+  "description": "Interact with the profile picture and cover photo.",
+  "permissions": [
+    "contextMenus",
+    "activeTab",
+    "scripting",
+    "downloads",
+    "storage"
+  ],
+  "host_permissions": [
+    "*://facebook.com/*",
+    "*://*.facebook.com/*",
+    "*://graph.facebook.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Ver fotos de perfil y portada"
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

@@ -1,0 +1,760 @@
+/* ==========================================================================
+   VARIABLES DE SISTEMA (Inspirado en Linear / Vercel UI)
+   ========================================================================== */
+:root {
+    /* TIPOGRAFÍA */
+    --font-mono: 'SF Mono', SFMono-Regular, Consolas, 'Liberation Mono', monospace;
+    --font-sans: '-apple-system', BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+    /* ESPECTRO CLARO */
+    --bg-workspace: #ffffff;
+    --bg-surface: #f4f4f5;
+    --bg-canvas: #e4e4e7;
+    --border-color: #e4e4e7;
+    --border-strong: #d4d4d8;
+    
+    --text-core: #09090b;
+    --text-muted: #71717a;
+    
+    --accent: #2563eb;
+    --accent-hover: #1d4ed8;
+    --accent-bg: rgba(37, 99, 235, 0.06);
+    --success: #0f766e;
+    --success-bg: #ccfbf1;
+    --danger: #e11d48;
+    --danger-bg: #ffe4e6;
+
+    /* DIMENSIONES Y ESPACIADO */
+    --panel-pad: 10px;
+    --panel-pad-lg: 16px;
+    --panel-gap: 12px;
+    
+    /* RADIOS (BORDES REDONDEADOS) */
+    --radius-sm: 4px;
+    --radius-md: 6px;
+    --radius-lg: 8px;
+    --radius-xl: 12px;
+    --radius-2xl: 16px;
+    --radius-full: 9999px;
+    
+    /* ANIMACIONES */
+    --transition-fast: 0.15s ease;
+    --transition-normal: 0.2s ease;
+    --transition-slow: 0.3s ease;
+    
+    /* SOMBRAS */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 1px 3px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    
+    /* DIMENSIONES FIJAS DEL POPUP */
+    --popup-width: 380px;
+    --popup-height: 600px;
+    
+    /* DIMENSIONES FIJAS DEL CANVAS */
+    --canvas-width: 100%;
+    --canvas-height: 120px;
+    --canvas-sm-width: 100%;
+    --canvas-sm-height: 75px;
+    
+    /* MODAL */
+    --modal-width: 90%;
+    --modal-max-width: 350px;
+    --modal-height: 320px;
+}
+
+body.dark-mode {
+    /* ESPECTRO OSCURO (Deep Carbon / Zinc 950) */
+    --bg-workspace: #09090b;
+    --bg-surface: #18181b;
+    --bg-canvas: #121214;
+    --border-color: #27272a;
+    --border-strong: #3f3f46;
+    
+    --text-core: #fafafa;
+    --text-muted: #a1a1aa;
+    
+    --accent: #3b82f6;
+    --accent-hover: #60a5fa;
+    --accent-bg: rgba(59, 130, 246, 0.1);
+    --success: #2dd4bf;
+    --success-bg: rgba(45, 212, 191, 0.1);
+    --danger: #fb7185;
+    --danger-bg: rgba(251, 113, 133, 0.1);
+    
+    /* SOMBRAS EN MODO OSCURO */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 1px 3px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+    --shadow-xl: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+}
+
+/* ==========================================================================
+   RESETS & ARQUITECTURA GENERAL
+   ========================================================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    width: var(--popup-width);
+    height: var(--popup-height);
+    background-color: var(--bg-workspace);
+    color: var(--text-core);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    letter-spacing: -0.01em;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    border-radius: var(--popup-radius);
+    -webkit-font-smoothing: antialiased;
+}
+
+.workspace {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    border-radius: inherit;
+}
+
+.hidden { display: none !important; }
+
+/* ==========================================================================
+   HEADER Y FOOTER FIJOS
+   ========================================================================== */
+.sidebar-header {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px var(--panel-pad);
+    background: var(--bg-surface);
+    border-bottom: 1px solid var(--border-color);
+    border-radius: var(--popup-radius) var(--popup-radius) 0 0;
+}
+
+.console-footer {
+    flex-shrink: 0;
+    padding: 8px var(--panel-pad);
+    background: var(--bg-surface);
+    border-top: 1px solid var(--border-color);
+    border-radius: 0 0 var(--popup-radius) var(--popup-radius);
+}
+
+/* ==========================================================================
+   CONTENIDO SCROLLABLE (SOLO EL INSPECTOR GRID SI ES NECESARIO)
+   ========================================================================== */
+.inspector-grid {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: var(--panel-pad);
+    gap: var(--panel-gap);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Scrollbar sutil */
+.inspector-grid::-webkit-scrollbar {
+    width: 4px;
+}
+.inspector-grid::-webkit-scrollbar-track {
+    background: var(--bg-surface);
+    border-radius: var(--radius-full);
+}
+.inspector-grid::-webkit-scrollbar-thumb {
+    background: var(--border-strong);
+    border-radius: var(--radius-full);
+}
+.inspector-grid::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+}
+
+/* ==========================================================================
+   DIMENSIONES FIJAS DEL CANVAS PRINCIPAL
+   ========================================================================== */
+.asset-canvas {
+    width: var(--canvas-width);
+    height: var(--canvas-height);
+    border-radius: var(--radius-md);
+    background-color: var(--bg-canvas);
+    background-image: linear-gradient(45deg, var(--bg-surface) 25%, transparent 25%), 
+                      linear-gradient(-45deg, var(--bg-surface) 25%, transparent 25%), 
+                      linear-gradient(45deg, transparent 75%, var(--bg-surface) 75%), 
+                      linear-gradient(-45deg, transparent 75%, var(--bg-surface) 75%);
+    background-size: 16px 16px;
+    background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.asset-canvas img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    mix-blend-mode: normal;
+}
+
+/* ==========================================================================
+   DIMENSIONES FIJAS DEL CANVAS PEQUEÑO
+   ========================================================================== */
+.asset-canvas-sm {
+    width: var(--canvas-sm-width);
+    height: var(--canvas-sm-height);
+    border-radius: var(--radius-sm);
+    background: var(--bg-canvas);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border-color);
+}
+
+.asset-canvas-sm img {
+    max-height: 100%;
+    object-fit: contain;
+}
+
+/* ==========================================================================
+   BOTONES CON RADIOS VARIABLES
+   ========================================================================== */
+.action-trigger {
+    border-radius: var(--radius-full);
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 500;
+    padding: 6px 10px;
+    border: 1px solid var(--border-strong);
+    background: var(--bg-workspace);
+    color: var(--text-core);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-align: center;
+}
+
+.action-trigger:hover:not(:disabled) {
+    border-color: var(--text-core);
+    background: var(--bg-surface);
+}
+
+.action-trigger:disabled {
+    opacity: 0.25;
+    cursor: not-allowed;
+    background: var(--bg-surface) !important;
+    color: var(--text-muted) !important;
+    border-color: var(--border-color) !important;
+}
+
+.primary-trigger {
+    background: var(--text-core);
+    color: var(--bg-workspace);
+    border: 1px solid var(--text-core);
+}
+.primary-trigger:hover:not(:disabled) {
+    opacity: 0.9;
+    background: var(--text-core);
+}
+
+.secondary-trigger {
+    color: var(--accent);
+    border-color: var(--border-strong);
+}
+.secondary-trigger:hover:not(:disabled) {
+    background: var(--accent-bg);
+    border-color: var(--accent);
+}
+
+.success-trigger {
+    background: var(--success-bg);
+    color: var(--success);
+    border-color: var(--success);
+    width: 100%;
+}
+.success-trigger:hover:not(:disabled) {
+    opacity: 0.85;
+    background: var(--success-bg);
+}
+
+/* ==========================================================================
+   MODAL
+   ========================================================================== */
+.viewer-modal-content {
+    width: var(--modal-width);
+    max-width: var(--modal-max-width);
+}
+
+.viewer-image-container {
+    height: var(--modal-height);
+    border-radius: var(--radius-lg);
+}
+
+/* ==========================================================================
+   ELEMENTOS ADICIONALES
+   ========================================================================== */
+.empty-state::before {
+    content: "[ NO HAY IMAGEN DISPONIBLE ]";
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 0.02em;
+}
+
+.control-bar {
+    display: flex;
+    gap: 6px;
+    margin-top: 6px;
+}
+
+.ia-extension {
+    margin-top: 6px;
+    background: var(--accent-bg);
+    border: 1px dashed var(--accent);
+    border-radius: var(--radius-md);
+    padding: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.ia-header {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--accent);
+    font-weight: bold;
+}
+
+.console-toast {
+    background: var(--danger-bg);
+    color: var(--danger);
+    border: 1px solid var(--danger);
+    padding: 4px 8px;
+    border-radius: var(--radius-full);
+    font-family: var(--font-mono);
+    font-size: 9px;
+    margin-bottom: 6px;
+    text-align: left;
+}
+
+.loading-spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--border-strong);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.5s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Estados de cursor para canvas clickeables */
+.asset-canvas:not(.empty-state),
+.asset-canvas-sm:not(.empty-state) {
+    cursor: zoom-in;
+    transition: border-color 0.15s ease;
+}
+
+.asset-canvas:not(.empty-state):hover {
+    border-color: var(--accent);
+}
+
+/* ==========================================================================
+   BARRA SUPERIOR DE CONTROL
+   ========================================================================== */
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px var(--panel-pad);
+    background: var(--bg-surface);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.brand-title {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    color: var(--text-core);
+}
+
+.status-dot {
+    width: 6px;
+    height: 6px;
+    background-color: var(--accent);
+    border-radius: 50%;
+}
+
+.pulsing {
+    animation: pulse 2s infinite ease-in-out;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.4; transform: scale(0.9); }
+    50% { opacity: 1; transform: scale(1.1); }
+    100% { opacity: 0.4; transform: scale(0.9); }
+}
+
+.control-tab-btn {
+    background: none;
+    border: 1px solid var(--border-color);
+    padding: 4px 8px;
+    border-radius: var(--radius-btn);
+    cursor: pointer;
+    color: var(--text-core);
+    font-size: 11px;
+    background: var(--bg-workspace);
+}
+
+/* ==========================================================================
+   INSPECTOR GRID (ZONA DE RECURSOS)
+   ========================================================================== */
+.inspector-grid {
+    display: flex;
+    flex-direction: column;
+    padding: var(--panel-pad);
+    gap: 16px;
+}
+
+.asset-row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.asset-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 4px;
+}
+
+.meta-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--text-muted);
+    font-weight: bold;
+}
+
+.meta-title {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-core);
+}
+
+/* Contenedor del Visor (Lightroom / Figma Canvas Style) */
+.viewer-wrapper {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-box);
+    padding: 6px;
+}
+
+.asset-canvas {
+    width: 100%;
+    height: 140px;
+    background-color: var(--bg-canvas);
+    /* Fondo de cuadrícula transparente premium para diseño industrial */
+    background-image: linear-gradient(45deg, var(--bg-surface) 25%, transparent 25%), 
+                      linear-gradient(-45deg, var(--bg-surface) 25%, transparent 25%), 
+                      linear-gradient(45deg, transparent 75%, var(--bg-surface) 75%), 
+                      linear-gradient(-45deg, transparent 75%, var(--bg-surface) 75%);
+    background-size: 16px 16px;
+    background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
+    border-radius: var(--radius-btn);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.asset-canvas img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    mix-blend-mode: normal;
+}
+
+.empty-state::before {
+    content: "[ NO HAY IMAGEN DISPONIBLE ]";
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 0.02em;
+}
+
+/* ==========================================================================
+   PANEL INTEGRADO IA
+   ========================================================================== */
+.ia-extension {
+    margin-top: 4px;
+    background: var(--accent-bg);
+    border: 1px dashed var(--accent);
+    border-radius: var(--radius-box);
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.asset-canvas-sm {
+    width: 100%;
+    height: 90px;
+    background: var(--bg-canvas);
+    border-radius: var(--radius-btn);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border-color);
+}
+.asset-canvas-sm img { max-height: 100%; object-fit: contain; }
+
+.success-trigger {
+    background: var(--success-bg);
+    color: var(--success);
+    border-color: var(--success);
+    width: 100%;
+}
+.success-trigger:hover:not(:disabled) {
+    opacity: 0.85;
+    background: var(--success-bg);
+}
+
+/* ==========================================================================
+   TERMINAL / CONSOLA INFERIOR
+   ========================================================================== */
+.console-footer {
+    margin-top: auto;
+    padding: 10px var(--panel-pad);
+    background: var(--bg-surface);
+    border-top: 1px solid var(--border-color);
+}
+
+.console-note {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+.code-symbol {
+    color: var(--accent);
+    font-weight: bold;
+}
+
+.console-toast {
+    background: var(--danger-bg);
+    color: var(--danger);
+    border: 1px solid var(--danger);
+    padding: 6px 10px;
+    border-radius: var(--radius-btn);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    margin-bottom: 8px;
+    text-align: left;
+}
+
+/* ==========================================================================
+   VISOR EMERGENTE (MODAL) - ESTILO LIGHTROOM INSPECTOR
+   ========================================================================== */
+
+/* El Contenedor del Modal */
+.viewer-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: rgba(9, 9, 11, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.viewer-modal.modal-active {
+    display: flex !important;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Envoltorio del contenido */
+.viewer-modal-content {
+    position: relative;
+    width: 90%;
+    max-width: 350px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Contenedor estricto para encuadrar el zoom por recorte */
+.viewer-image-container {
+    width: 100%;
+    height: 320px; /* Cambiado de max-height a height fija para garantizar proporciones perfectas en el visor */
+    overflow: hidden;
+    border-radius: var(--radius-box);
+    border: 1px solid var(--border-strong);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+    background-color: var(--bg-canvas);
+    cursor: grab;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Cambia el cursor a un puño cerrado mientras se arrastra */
+.viewer-image-container:active {
+    cursor: grabbing;
+}
+
+/* Imagen dentro del modal */
+.viewer-modal-content img {
+    max-width: 100%;
+    max-height: 100%;
+    display: block; /* NUEVO: Elimina el espacio fantasma inferior de los elementos inline */
+    object-fit: contain; /* Mantiene la proporción original de la foto sin deformarla */
+    margin: 0 auto; /* Asegura el centrado en navegadores antiguos */
+    transform-origin: center center;
+    transform: translate(0px, 0px) scale(1);
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ==========================================================================
+   COMPLEMENTO DEL VISOR EMERGENTE (BOTÓN DE CIERRE Y CONFIGURACIÓN PAN/ZOOM)
+   ========================================================================== */
+
+/* Botón de cierre minimalista */
+.viewer-close {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    color: var(--text-core);
+    font-size: 20px;
+    font-weight: 300;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease;
+    z-index: 1001;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+}
+
+.viewer-close:hover {
+    background: var(--text-core);
+    color: var(--bg-workspace);
+    border-color: var(--text-core);
+    transform: scale(1.05);
+}
+
+/* Texto descriptivo inferior (Caption) */
+.viewer-caption {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: #fafafa;
+    background: rgba(24, 24, 27, 0.8);
+    padding: 4px 10px;
+    border-radius: var(--radius-btn);
+    border: 1px solid rgba(255,255,255,0.08);
+    text-align: center;.viewer-image-container
+    letter-spacing: 0.02em;
+    max-width: 100%;
+    word-break: break-all;
+}
+
+/* RENDIMIENTO CRÍTICO: Remueve la transición elástica ÚNICAMENTE cuando se arrastra 
+   para que responda instantáneamente al mouse sin generar retrasos o tirones visuales */
+.viewer-image-container.dragging img {
+    transition: none !important;
+}
+
+/* ==========================================================================
+   FOOTER LINKS - Buy me a Coffee + GitHub
+   ========================================================================== */
+.footer-links {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+
+.footer-left,
+.footer-right {
+    display: flex;
+    align-items: center;
+}
+
+.footer-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--text-muted);
+    background: transparent;
+    padding: 4px 8px;
+    border-radius: var(--radius-full);
+    transition: all 0.2s ease;
+    cursor: pointer;
+    letter-spacing: -0.01em;
+}
+
+.footer-link:hover {
+    color: var(--accent);
+    background: var(--accent-bg);
+}
+
+.github-link:hover {
+    transform: translateX(-1px);
+}
+
+.donate-link:hover {
+    transform: translateX(1px);
+}
+
+.footer-icon {
+    width: 14px;
+    height: 14px;
+    transition: transform 0.2s ease;
+}
+
+.footer-link:hover .footer-icon {
+    transform: scale(1.05);
+}
+
+.footer-text {
+    line-height: 1;
+}
