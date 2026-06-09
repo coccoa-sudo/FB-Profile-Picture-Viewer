@@ -9,8 +9,8 @@
   <img src="screenshots/larg-promotional.png" alt="FB Profile Picture Viewer Demo" width="800">
 </p>
 
-[![Chromium](https://img.shields.io/badge/Chromium-Compatible-4285F4?logo=googlechrome)](https://www.chromium.org/)
-[![Edge Add-on](https://img.shields.io/badge/Edge-Add--on-blue?logo=microsoftedge)](https://microsoftedge.microsoft.com/addons)
+[![Chromium](https://img.shields.io/badge/Chromium-Compatible-4285F4?logo=googlechrome)](https://microsoftedge.microsoft.com/addons/detail/kmpdgpmmofbjbojdfbjgfcajddalninl)
+[![Edge Add-on](https://img.shields.io/badge/Edge-Add--on-blue?logo=microsoftedge)](https://microsoftedge.microsoft.com/addons/detail/kmpdgpmmofbjbojdfbjgfcajddalninl)
 
 ![Chrome](https://img.shields.io/badge/Chrome-141414?logo=googlechrome&logoColor=white)
 ![Edge](https://img.shields.io/badge/Edge-141414?logo=microsoftedge&logoColor=white)
