@@ -45,7 +45,7 @@
 ## 📦 Installation
 
 ### From the official stores (recommended)
-- **Microsoft Edge Add‑ons** – [Get for Edge](https://microsoftedge.microsoft.com/addons)
+- **Microsoft Edge Add‑ons** – [Get for Edge](https://microsoftedge.microsoft.com/addons/detail/kmpdgpmmofbjbojdfbjgfcajddalninl)
 - **Chrome Web Store** – [ Coming Soon ]
 
 ### Manual installation (developer mode)
